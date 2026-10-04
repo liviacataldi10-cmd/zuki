@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zuki — Análise de risco contratual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap">
+  <link rel="icon" href="logo.webp" type="image/webp">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="conteudo topo-interno">
+      <a class="logo" href="/" aria-label="Zuki — início"><img src="logo.webp" alt="" width="48" height="48">Zuki</a>
+      <span class="sublogo">Análise de risco contratual</span>
+    </div>
+  </header>
+
+  <main class="conteudo">
+    <!-- ============ FORMULÁRIO ============ -->
+    <section id="tela-form">
+      <div class="intro">
+        <h1>Descubra o risco de cada cláusula antes de assinar.</h1>
+        <p>Informe o lado do seu cliente e envie o contrato. A Zuki avalia cada cláusula do ponto de vista dele, explica o risco e sugere uma nova redação.</p>
+      </div>
+
+      <form id="form" class="cartao" novalidate>
+        <fieldset>
+          <legend>1. De que lado está o seu cliente?</legend>
+          <div class="lados" role="radiogroup">
+            <label class="lado"><input type="radio" name="lado" value="Comprador"><span>Comprador</span></label>
+            <label class="lado"><input type="radio" name="lado" value="Vendedor"><span>Vendedor</span></label>
+            <label class="lado"><input type="radio" name="lado" value="Outro"><span>Outro</span></label>
+          </div>
+          <div id="campo-outro" class="oculto">
+            <label for="papel-outro">Descreva o papel do cliente</label>
+            <input id="papel-outro" type="text" maxlength="100" placeholder="Ex.: locatário, contratante, prestador de serviços">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. Qual é o contrato?</legend>
+          <div class="abas" role="tablist">
+            <button type="button" role="tab" id="aba-pdf" class="aba ativa" aria-selected="true">Enviar PDF</button>
+            <button type="button" role="tab" id="aba-texto" class="aba" aria-selected="false">Colar cláusulas</button>
+          </div>
+
+          <div id="painel-pdf">
+            <label id="area-pdf" class="area-arquivo" for="arquivo">
+              <input id="arquivo" type="file" accept="application/pdf,.pdf">
+              <strong id="nome-arquivo">Clique para escolher o PDF ou arraste-o até aqui</strong>
+              <span>Contrato inteiro · até 10 MB · o arquivo não é salvo</span>
+            </label>
+          </div>
+
+          <div id="painel-texto" class="oculto">
+            <label for="texto">Cole ou transcreva as cláusulas que deseja analisar</label>
+            <textarea id="texto" rows="10" placeholder="CLÁUSULA 1ª – DO OBJETO&#10;..."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset id="campo-senha" class="oculto">
+          <legend>3. Senha de acesso</legend>
+          <input id="senha" type="password" autocomplete="off" placeholder="Senha informada pelo responsável">
+        </fieldset>
+
+        <p id="erro-form" class="erro oculto" role="alert"></p>
+        <button type="submit" class="botao-principal">Analisar contrato</button>
+      </form>
+    </section>
+
+    <!-- ============ CARREGANDO ============ -->
+    <section id="tela-carregando" class="oculto" aria-live="polite">
+      <div class="cartao carregando">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2 id="msg-carregando">Lendo o contrato…</h2>
+        <p>A análise pode levar de alguns segundos a alguns minutos, conforme o tamanho do contrato. Não feche esta página.</p>
+      </div>
+    </section>
+
+    <!-- ============ RESULTADO ============ -->
+    <section id="tela-resultado" class="oculto">
+      <div class="barra-acoes nao-imprimir">
+        <button type="button" id="btn-nova" class="botao-sec">← Nova análise</button>
+        <button type="button" id="btn-pdf" class="botao-principal pequeno">Exportar relatório em PDF</button>
+      </div>
+
+      <div id="resumo" class="cartao resumo"></div>
+
+      <div class="filtros nao-imprimir">
+        <div>
+          <label for="filtro-nota">Filtrar por nota</label>
+          <select id="filtro-nota">
+            <option value="0">Todas as notas</option>
+            <option value="5">5 — Crítico</option>
+            <option value="4">4 — Alto</option>
+            <option value="3">3 — Moderado</option>
+            <option value="2">2 — Baixo</option>
+            <option value="1">1 — Mínimo</option>
+            <option value="4+">4 ou mais</option>
+            <option value="3+">3 ou mais</option>
+          </select>
+        </div>
+        <div>
+          <label for="ordem">Ordenar por</label>
+          <select id="ordem">
+            <option value="contrato">Ordem do contrato</option>
+            <option value="maior">Maior risco primeiro</option>
+            <option value="menor">Menor risco primeiro</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="lista-clausulas"></div>
+      <section id="lacunas" class="oculto"></section>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="conteudo">Esta análise é gerada por inteligência artificial e não substitui a revisão de um advogado.</div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
