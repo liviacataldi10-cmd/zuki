@@ -35,12 +35,12 @@ function mostrar(tela) {
 
 /* ---------------- formulário ---------------- */
 
-document.querySelectorAll("input[name=lado]").forEach((r) =>
-  r.addEventListener("change", () => {
-    $("campo-outro").classList.toggle("oculto", r.value !== "Outro" || !r.checked);
-    if (r.value === "Outro") $("papel-outro").focus();
-  })
-);
+$("lado").addEventListener("change", () => {
+  const outro = $("lado").value === "Outro";
+  $("campo-outro").classList.toggle("oculto", !outro);
+  $("papel-outro").required = outro;
+  if (outro) $("papel-outro").focus();
+});
 
 function trocarAba(aba) {
   abaAtual = aba;
@@ -79,12 +79,13 @@ $("form").addEventListener("submit", async (e) => {
   e.preventDefault();
   erroForm("");
 
-  const lado = (document.querySelector("input[name=lado]:checked") || {}).value;
+  const lado = $("lado").value;
   const papel = $("papel-outro").value.trim();
   const texto = $("texto").value.trim();
+  const preocupacoes = $("preocupacoes").value.trim().slice(0, 500);
 
-  if (!lado) return erroForm("Escolha de que lado está o seu cliente: Comprador, Vendedor ou Outro.");
-  if (lado === "Outro" && !papel) return erroForm("Descreva o papel do cliente (ex.: locatário, contratante, prestador).");
+  if (!lado) return erroForm("Escolha de que lado está o seu cliente.");
+  if (lado === "Outro" && !papel) { erroForm("Descreva o papel do cliente."); return $("papel-outro").focus(); }
   if (abaAtual === "pdf") {
     if (!arquivoEscolhido) return erroForm("Escolha o arquivo PDF do contrato ou use a aba “Colar cláusulas”.");
     if (!/\.pdf$/i.test(arquivoEscolhido.name) && arquivoEscolhido.type !== "application/pdf") return erroForm("O arquivo precisa ser um PDF.");
@@ -93,7 +94,8 @@ $("form").addEventListener("submit", async (e) => {
     return erroForm("Cole as cláusulas que deseja analisar no campo de texto.");
   }
 
-  const ladoTexto = lado === "Outro" ? `Outro — ${papel}` : lado;
+  const contrato = $("lado").selectedOptions[0]?.dataset.contrato;
+  const ladoTexto = lado === "Outro" ? `Outro — ${papel}` : contrato ? `${lado} (${contrato})` : lado;
   senhaAtual = $("senha").value;
   cancelado = false;
 
@@ -110,7 +112,7 @@ $("form").addEventListener("submit", async (e) => {
       if (conteudo.length > 200000) throw new ErroUsuario("O texto colado é grande demais. Cole menos cláusulas por vez.");
     }
     if (conteudo.length > 500000) throw new ErroUsuario("O contrato é grande demais para uma única análise. Cole apenas as cláusulas que deseja analisar.");
-    resultado = await analisar(conteudo, ladoTexto, completo);
+    resultado = await analisar(conteudo, ladoTexto, completo, preocupacoes);
     pararCarregamento();
     renderizar();
     mostrar("tela-resultado");
@@ -240,26 +242,26 @@ function emLotes(cs) {
   return out;
 }
 
-async function analisarLote(lote, visao, lado, completo) {
+async function analisarLote(lote, visao, lado, completo, preocupacoes) {
   const enviar = lote.map((c) => ({ id: c.id, numero: c.numero, texto: c.texto.slice(0, 12000) }));
   try {
-    const d = await chamarIA("lote", { clausulas: enviar, visao, lado, completo });
+    const d = await chamarIA("lote", { clausulas: enviar, visao, lado, completo, preocupacoes });
     return d.clausulas || [];
   } catch (e) {
     if (e.tempo && lote.length > 1) { // demorou demais: tenta de novo em pedaços menores
       const meio = Math.ceil(lote.length / 2);
-      return [...(await analisarLote(lote.slice(0, meio), visao, lado, completo)), ...(await analisarLote(lote.slice(meio), visao, lado, completo))];
+      return [...(await analisarLote(lote.slice(0, meio), visao, lado, completo, preocupacoes)), ...(await analisarLote(lote.slice(meio), visao, lado, completo, preocupacoes))];
     }
     if (e.tempo) return []; // uma cláusula sozinha estourou o tempo: fica marcada para revisão manual
     throw e;
   }
 }
 
-async function analisar(texto, lado, completo) {
+async function analisar(texto, lado, completo, preocupacoes = "") {
   status("Identificando o tipo de contrato…");
   let visao;
   try {
-    visao = await chamarIA("visao", { texto: texto.slice(0, 60000), lado, completo });
+    visao = await chamarIA("visao", { texto: texto.slice(0, 60000), lado, completo, preocupacoes });
   } catch (e) {
     if (e.tempo) throw new ErroUsuario("O servidor demorou demais para responder. Tente com menos texto ou tente novamente.");
     throw e;
@@ -286,7 +288,7 @@ async function analisar(texto, lado, completo) {
   const trabalhador = async () => {
     while (fila.length) {
       const lote = fila.shift();
-      for (const a of await analisarLote(lote, visao, lado, completo)) analises.set(Number(a.id), a);
+      for (const a of await analisarLote(lote, visao, lado, completo, preocupacoes)) analises.set(Number(a.id), a);
       feitas += lote.length;
       status(`Analisando as cláusulas (${Math.min(feitas, clausulas.length)} de ${clausulas.length})…`);
     }
@@ -304,8 +306,6 @@ async function analisar(texto, lado, completo) {
       redacao_sugerida: String(a.redacao_sugerida || ""),
     };
   });
-  const notas = saida.map((c) => c.nota);
-  const contagem = {}; for (let n = 1; n <= 5; n++) contagem[n] = notas.filter((x) => x === n).length;
   return {
     tipo_de_contrato: visao.tipo_de_contrato || "Não identificado",
     regime_juridico: visao.regime_juridico || "Não identificado",
@@ -314,11 +314,21 @@ async function analisar(texto, lado, completo) {
     contrato_completo: completo,
     clausulas: saida,
     lacunas: (visao.lacunas || []).map((l) => ({ tipo: String(l.tipo || "lacuna"), titulo: String(l.titulo || ""), descricao: String(l.descricao || ""), relevancia: String(l.relevancia || "media"), redacao_sugerida: String(l.redacao_sugerida || "") })),
-    resumo: {
-      nota_media: Math.round(notas.reduce((a, b) => a + b, 0) / notas.length * 10) / 10,
-      contagem_por_nivel: contagem,
-      mais_criticas: notas.map((_, i) => i).sort((a, b) => notas[b] - notas[a] || a - b).slice(0, 3),
-    },
+    preocupacoes_cliente: preocupacoes,
+    tratamento_preocupacoes: preocupacoes
+      ? (visao.preocupacoes || []).map((p) => ({ preocupacao: String(p.preocupacao || ""), tratamento: String(p.tratamento || "") }))
+      : [],
+    resumo: montarResumo(saida),
+  };
+}
+
+function montarResumo(clausulas) {
+  const notas = clausulas.map((c) => c.nota);
+  const contagem = {}; for (let n = 1; n <= 5; n++) contagem[n] = notas.filter((x) => x === n).length;
+  return {
+    nota_media: Math.round(notas.reduce((a, b) => a + b, 0) / notas.length * 10) / 10,
+    contagem_por_nivel: contagem,
+    mais_criticas: notas.map((_, i) => i).sort((a, b) => notas[b] - notas[a] || a - b).slice(0, 3),
   };
 }
 
@@ -374,6 +384,7 @@ function renderizar() {
       el("div", {}, el("strong", { texto: "Nota média de risco" }), el("div", { class: "cl-nivel", texto: `de 1 a 5 · ${NIVEIS[arred] || ""}` })),
       barras
     ),
+    preocupacoesResumo(r),
     criticas
   );
 
@@ -381,6 +392,18 @@ function renderizar() {
   $("ordem").value = "contrato";
   renderizarClausulas();
   renderizarLacunas();
+}
+
+function preocupacoesResumo(r) {
+  if (!r.preocupacoes_cliente) return null;
+  const itens = r.tratamento_preocupacoes || [];
+  return el("div", { class: "preocupacoes-resumo" },
+    el("h3", { texto: "Preocupações do cliente" }),
+    el("p", { class: "preocupacoes-texto", texto: `Informadas: ${r.preocupacoes_cliente}` }),
+    itens.length
+      ? el("ul", {}, itens.map((p) => el("li", {}, el("strong", { texto: p.preocupacao }), el("span", { texto: p.tratamento }))))
+      : el("p", { class: "cl-nivel", texto: "A IA não detalhou o tratamento de cada preocupação. Elas foram consideradas na análise das cláusulas abaixo." })
+  );
 }
 
 function cartao(c, pos) {
@@ -471,11 +494,55 @@ $("btn-nova").addEventListener("click", () => {
     $("form").reset();
     escolherArquivo(null);
     $("campo-outro").classList.add("oculto");
+    $("papel-outro").required = false;
+    atualizarContador();
     mostrar("tela-form");
   }
 });
 
-fetch("/api/config").then((r) => r.json()).then((c) => $("campo-senha").classList.toggle("oculto", !c.senha)).catch(() => {});
+/* contador do campo de preocupações */
+function atualizarContador() {
+  $("contador-preocupacoes").textContent = `${$("preocupacoes").value.length} de 500 caracteres`;
+}
+$("preocupacoes").addEventListener("input", atualizarContador);
+
+/* "Analisar contrato" do topo: rola até o formulário e leva o foco ao primeiro campo */
+document.querySelectorAll('a[href="#form"]').forEach((a) =>
+  a.addEventListener("click", (e) => {
+    e.preventDefault();
+    const suave = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("form").scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
+    $("lado").focus({ preventScroll: true });
+    history.replaceState(null, "", "#form");
+  })
+);
+
+/* critérios: abertos no computador e no tablet, recolhidos no celular */
+$("criterios-det").open = matchMedia("(min-width: 640px)").matches;
+
+const MODO_EXEMPLO = /^\/exemplo\/?$/.test(location.pathname);
+
+if (MODO_EXEMPLO) {
+  $("tela-form").classList.add("oculto");
+  document.title = "Exemplo de análise — Zuki";
+  $("menu-exemplo").setAttribute("aria-current", "page");
+  $("faixa-exemplo").classList.remove("oculto");
+  $("btn-nova").classList.add("oculto");
+  carregarScript("/exemplo-dados.js")
+    .then(() => {
+      const d = window.ZUKI_EXEMPLO;
+      resultado = { ...d, resumo: montarResumo(d.clausulas) };
+      renderizar();
+      mostrar("tela-resultado");
+    })
+    .catch(() => {
+      mostrar("tela-form");
+      erroForm("Não foi possível carregar a análise de exemplo. Recarregue a página.");
+    });
+} else {
+  fetch("/api/config").then((r) => r.json()).then((c) => $("campo-senha").classList.toggle("oculto", !c.senha)).catch(() => {});
+  if (location.hash === "#form") requestAnimationFrame(() => { $("form").scrollIntoView({ block: "start" }); $("lado").focus({ preventScroll: true }); });
+}
 
 /* Exportar PDF: usa a impressão do navegador ("Salvar como PDF"). */
 $("btn-pdf").addEventListener("click", () => window.print());
