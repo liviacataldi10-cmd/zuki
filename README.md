@@ -83,4 +83,4 @@ O código foi escrito com apoio do **Claude Code** (Anthropic), e a análise den
 
 ## Autores
 
-[COLOCAR AQUI OS NOMES DO GRUPO]
+Lívia Cataldi, Marina Jurado, Sofia Iennaco, Maria Bulgari, Fernanda Jotta
