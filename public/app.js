@@ -431,10 +431,32 @@ function cartao(c, pos) {
         el("h3", { class: "cl-titulo", texto: [c.numero, c.titulo].filter(Boolean).join(" — ") }),
         el("div", { class: "cl-nivel", texto: `Risco ${NIVEIS[c.nota].toLowerCase()} (${c.nota}/5)` }))),
     el("div", { class: "cl-corpo" },
-      el("details", { class: "original" }, el("summary", { texto: "Texto original da cláusula" }), el("blockquote", { texto: c.texto_original })),
-      criterios,
-      el("div", {}, el("h4", { texto: "Por que é um risco para o cliente" }), el("p", { texto: c.comentario_risco })),
-      melhorar));
+      el("div", { class: "cl-comparar" },
+        el("div", { class: "cl-col original" },
+          el("div", {}, el("h4", { texto: "Texto original da cláusula" }), el("blockquote", { texto: c.texto_original }))),
+        el("div", { class: "cl-col analise" },
+          criterios,
+          avaliacao(c),
+          melhorar))));
+}
+
+/* Nota 1: "Avaliação" com o rótulo "Sem risco relevante". Demais notas: por que é um risco. */
+function avaliacao(c) {
+  if (c.nota === 1) {
+    return el("div", {},
+      el("h4", { texto: "Avaliação" }),
+      el("span", { class: "rotulo-sem-risco", texto: "Sem risco relevante" }),
+      el("p", { texto: c.comentario_risco }));
+  }
+  return el("div", {}, el("h4", { texto: "Por que é um risco para o cliente" }), el("p", { texto: c.comentario_risco }));
+}
+
+function rotuloRelevancia(v) {
+  const k = String(v || "").trim().toLowerCase();
+  if (k === "alta") return "Alta";
+  if (k === "media" || k === "média") return "Média";
+  if (k === "baixa") return "Baixa";
+  return k ? k.charAt(0).toUpperCase() + k.slice(1) : "Média";
 }
 
 function renderizarClausulas() {
@@ -464,7 +486,7 @@ function renderizarLacunas() {
           el("div", { class: "lacuna" },
             el("h3", {}, el("span", { texto: l.titulo }),
               el("span", { class: "tag", texto: l.tipo === "contradicao" ? "Contradição" : "Cláusula ausente" }),
-              el("span", { class: "tag", texto: `Relevância ${l.relevancia}` })),
+              el("span", { class: "tag", texto: `Relevância ${rotuloRelevancia(l.relevancia)}` })),
             el("p", { texto: l.descricao }),
             l.redacao_sugerida ? el("p", {}, el("strong", { texto: "Sugestão de redação: " }), l.redacao_sugerida) : null))
       : [el("p", { class: "vazio", texto: "Nenhuma lacuna ou contradição relevante foi identificada." })])
@@ -524,7 +546,7 @@ const MODO_EXEMPLO = /^\/exemplo\/?$/.test(location.pathname);
 
 if (MODO_EXEMPLO) {
   $("tela-form").classList.add("oculto");
-  document.title = "Exemplo de análise — Zuki";
+  document.title = "Exemplo de análise — Brief";
   $("menu-exemplo").setAttribute("aria-current", "page");
   $("faixa-exemplo").classList.remove("oculto");
   $("btn-nova").classList.add("oculto");
@@ -546,4 +568,3 @@ if (MODO_EXEMPLO) {
 
 /* Exportar PDF: usa a impressão do navegador ("Salvar como PDF"). */
 $("btn-pdf").addEventListener("click", () => window.print());
-window.addEventListener("beforeprint", () => document.querySelectorAll("details.original").forEach((d) => (d.open = true)));

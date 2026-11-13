@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zuki — Análise de risco contratual</title>
+  <title>Brief — Análise de risco contratual</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
   <link rel="icon" href="/logo.webp" type="image/webp">
   <link rel="stylesheet" href="/estilo.css">
 </head>
 <body>
   <header class="topo">
     <div class="conteudo topo-interno">
-      <a class="logo" href="/" aria-label="Zuki — início"><img src="/logo.webp" alt="" width="48" height="48">Zuki</a>
-      <span class="sublogo">Análise de risco contratual</span>
+      <a class="logo" href="/" aria-label="Brief, por Zuki — início"><img src="/logo.webp" alt="" width="48" height="48">Brief</a>
+      <span class="sublogo">por Zuki</span>
       <nav class="menu" aria-label="Menu principal">
         <a href="/#como-funciona">Como funciona</a>
+        <a href="/#planos">Planos</a>
         <a href="/exemplo" id="menu-exemplo">Exemplo</a>
       </nav>
     </div>
@@ -26,7 +27,23 @@
     <section id="tela-form">
       <div class="intro">
         <h1>Descubra o risco de cada cláusula antes de assinar.</h1>
-        <p>Informe o lado do seu cliente e envie o contrato. A Zuki avalia cada cláusula do ponto de vista dele, explica o risco e sugere uma nova redação.</p>
+        <p>Informe o lado do seu cliente e envie o contrato. A Brief avalia cada cláusula do ponto de vista dele, explica o risco e sugere uma nova redação.</p>
+
+        <div class="capa" role="list">
+          <article class="capa-bloco" role="listitem">
+            <h2>Quem somos</h2>
+            <p>Somos a Zuki: estudantes de Direito que convivem com contratos extensos. Percebemos que a revisão toma muito tempo e que, em dezenas de páginas, sempre há o risco de uma cláusula perigosa passar despercebida. Criamos a Brief para ajudar nessa leitura.</p>
+          </article>
+          <article class="capa-bloco" role="listitem">
+            <h2>Para quem é</h2>
+            <p>Para advogados, escritórios de advocacia e departamentos jurídicos de empresas. Também serve a outros profissionais que precisam ler contratos e entender onde estão os riscos.</p>
+          </article>
+          <article class="capa-bloco" role="listitem">
+            <h2>Para que serve</h2>
+            <p>A Brief analisa o risco das cláusulas de contratos de vários tipos, dá a cada uma uma nota de 1 a 5 e sugere nova redação. É uma ferramenta de apoio e revisão: orienta a análise e funciona como um alerta caso algo tenha passado despercebido. Não substitui o trabalho do profissional.</p>
+          </article>
+        </div>
+
         <div class="intro-acoes">
           <a href="#form" class="botao-principal link-botao">Analisar contrato</a>
           <a href="/exemplo" class="botao-sec link-botao">Ver análise de exemplo</a>
@@ -42,7 +59,7 @@
         </ol>
 
         <details id="criterios-det" class="criterios-det" open>
-          <summary class="subtitulo">O que a Zuki avalia</summary>
+          <summary class="subtitulo">O que a Brief avalia</summary>
           <ul class="criterios-lista">
             <li><strong>Validade</strong><span>A cláusula pode ser nula ou anulável?</span></li>
             <li><strong>Clareza</strong><span>Há termos vagos ou obrigações sem prazo?</span></li>
@@ -158,6 +175,33 @@
           </div>
         </div>
       </form>
+
+      <section id="planos" class="planos" aria-labelledby="titulo-planos">
+        <h2 id="titulo-planos" class="secao-titulo">Planos</h2>
+        <p class="planos-aviso">Proposta de modelo de negócio. Ainda não há cobrança: o uso atual do site é de demonstração.</p>
+        <div class="planos-grade">
+          <article class="plano">
+            <h3>Teste grátis</h3>
+            <p class="plano-preco">R$ 0</p>
+            <p class="plano-desc">1 contrato de até 15 cláusulas, para conhecer a Brief.</p>
+          </article>
+          <article class="plano">
+            <h3>Por contrato</h3>
+            <p class="plano-preco">R$ 9,90</p>
+            <p class="plano-desc">Por contrato de até 40 cláusulas. Ou 10 contratos por R$ 79.</p>
+          </article>
+          <article class="plano">
+            <h3>Escritório</h3>
+            <p class="plano-preco">R$ 149<span> por mês</span></p>
+            <p class="plano-desc">Plano de 6 meses (R$ 760 à vista, 15% de desconto), com até 30 contratos por mês.</p>
+          </article>
+          <article class="plano">
+            <h3>Empresa</h3>
+            <p class="plano-preco">R$ 490<span> por mês</span></p>
+            <p class="plano-desc">Plano de 6 meses (R$ 2.500 à vista), com até 100 contratos por mês, para departamentos jurídicos.</p>
+          </article>
+        </div>
+      </section>
     </section>
 
     <!-- ============ CARREGANDO ============ -->
