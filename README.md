@@ -1,6 +1,6 @@
 # Brief, por Zuki
 
-**Zuki** é uma legaltech fictícia, criada como projeto da disciplina **Ciência de Dados Aplicada ao Direito I** (2026/2). **Brief** é o seu produto: uma IA que analisa o risco das cláusulas de um contrato, do ponto de vista do cliente do advogado.
+**Zuki** é uma legaltech, criada como projeto da disciplina **Ciência de Dados Aplicada ao Direito I** (2026/2). **Brief** é o seu produto: uma IA que analisa o risco das cláusulas de um contrato, do ponto de vista do cliente do advogado.
 
 > Esta análise é gerada por inteligência artificial e não substitui a revisão de um advogado.
 
