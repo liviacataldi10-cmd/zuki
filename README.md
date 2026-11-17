@@ -4,7 +4,7 @@
 
 > Esta análise é gerada por inteligência artificial e não substitui a revisão de um advogado.
 
-**Site:** [COLOCAR AQUI O ENDEREÇO DO NETLIFY]
+**Site:** briefbyzuki4.netlify.app
 
 ## Para quem é, quem somos e para que serve
 
@@ -122,4 +122,4 @@ O código foi escrito com apoio do **Claude Code** (Anthropic), e a análise den
 
 ## Autores
 
-[COLOCAR AQUI OS NOMES DO GRUPO]
+Lívia Cataldi, Sofia Iennaco, Maria Bulgari, Fernanda Jotta, Marina Jurado
