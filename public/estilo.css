@@ -163,11 +163,27 @@ a:focus-visible, summary:focus-visible, select:focus-visible { outline: 3px soli
 #form { scroll-margin-top: 16px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
-/* ---------- capa ---------- */
-.capa { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 22px; }
-.capa-bloco { background: var(--papel); border: 1px solid var(--borda); border-top: 3px solid var(--roxo); border-radius: 0; padding: 16px 16px 14px; }
-.capa-bloco h2 { font-family: var(--titulo); color: var(--lavanda); font-size: 1rem; margin: 0 0 8px; }
-.capa-bloco p { margin: 0; font-size: .9rem; color: var(--texto); }
+/* ---------- página inicial: abertura e apresentação (sem caixas) ---------- */
+.hero { padding-block: 8px 28px; }
+.hero h1 { font-family: var(--titulo); font-size: clamp(1.7rem, 4.5vw, 2.5rem); line-height: 1.15; color: var(--lavanda); margin: 0 0 12px; text-wrap: balance; }
+.hero-sub { color: var(--suave); margin: 0 0 22px; max-width: 72ch; text-wrap: pretty; font-size: 1.05rem; }
+.hero .intro-acoes { margin-bottom: 0; }
+.apresentacao { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; padding-block: 28px; border-block: 1px solid var(--borda); margin-bottom: 32px; }
+.apresentacao h2 { font-family: var(--titulo); color: var(--lavanda); font-size: 1.05rem; margin: 0 0 8px; }
+.apresentacao p { margin: 0; font-size: .93rem; color: var(--texto); }
+.titulo-pagina { font-family: var(--titulo); font-size: clamp(1.5rem, 4vw, 2.1rem); line-height: 1.2; color: var(--lavanda); margin: 0 0 8px; }
+.menu .menu-cta { background: var(--roxo); color: #fff; margin-left: 6px; }
+.menu .menu-cta:hover { background: var(--roxo-claro); border-color: var(--roxo-claro); }
+.menu .menu-cta[aria-current="page"] { border-color: var(--lavanda); }
+.planos-cta { margin: 8px 0 0; }
+
+/* ---------- como funciona: linha do tempo ---------- */
+.linha-tempo { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; counter-reset: passo; }
+.linha-tempo li { position: relative; text-align: center; padding: 0 8px; }
+.marco { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; margin: 0 auto 12px; border-radius: 50%; background: var(--roxo); color: #fff; font-family: var(--titulo); font-weight: 700; font-size: .95rem; }
+.linha-tempo li:not(:last-child)::after { content: ""; position: absolute; top: 16px; left: calc(50% + 17px); width: calc(100% + 24px - 34px); height: 2px; background: var(--tracejado); }
+.linha-tempo h3 { margin: 0 0 6px; font-size: .98rem; font-weight: 600; color: var(--texto); }
+.linha-tempo p { margin: 0 auto; font-size: .88rem; color: var(--suave); max-width: 30ch; }
 
 /* ---------- como funciona ---------- */
 .como-funciona { margin: 0 0 22px; display: grid; gap: 14px; scroll-margin-top: 16px; }
@@ -230,10 +246,15 @@ textarea.curto { min-height: 84px; }
 }
 @media (max-width: 760px) {
   .criterios-lista { grid-template-columns: repeat(2, 1fr); }
-  .capa { grid-template-columns: 1fr; }
+  .apresentacao { grid-template-columns: 1fr; gap: 22px; }
 }
 @media (max-width: 640px) {
   .passos { grid-template-columns: 1fr; }
+  .linha-tempo { grid-template-columns: 1fr; gap: 22px; }
+  .linha-tempo li { text-align: left; padding: 0 0 0 52px; }
+  .marco { position: absolute; left: 0; top: 0; margin: 0; }
+  .linha-tempo li:not(:last-child)::after { top: 34px; left: 16px; width: 2px; height: calc(100% + 22px - 34px); }
+  .linha-tempo p { margin: 0; max-width: none; }
   .criterios-lista { grid-template-columns: 1fr; gap: 0; border: 1px solid var(--borda); border-radius: 0; overflow: hidden; }
   .criterios-lista li { border: 0; border-radius: 0; border-bottom: 1px solid var(--borda); }
   .criterios-lista li:last-child { border-bottom: 0; }

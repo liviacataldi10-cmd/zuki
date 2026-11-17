@@ -528,26 +528,11 @@ function atualizarContador() {
 }
 $("preocupacoes").addEventListener("input", atualizarContador);
 
-/* "Analisar contrato" do topo: rola até o formulário e leva o foco ao primeiro campo */
-document.querySelectorAll('a[href="#form"]').forEach((a) =>
-  a.addEventListener("click", (e) => {
-    e.preventDefault();
-    const suave = !matchMedia("(prefers-reduced-motion: reduce)").matches;
-    $("form").scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
-    $("lado").focus({ preventScroll: true });
-    history.replaceState(null, "", "#form");
-  })
-);
-
-/* critérios: abertos no computador e no tablet, recolhidos no celular */
-$("criterios-det").open = matchMedia("(min-width: 640px)").matches;
-
-const MODO_EXEMPLO = /^\/exemplo\/?$/.test(location.pathname);
+/* a página /exemplo é a mesma tela do resultado, preenchida com dados fictícios */
+const MODO_EXEMPLO = document.body.dataset.pagina === "exemplo";
 
 if (MODO_EXEMPLO) {
   $("tela-form").classList.add("oculto");
-  document.title = "Exemplo de análise — Brief";
-  $("menu-exemplo").setAttribute("aria-current", "page");
   $("faixa-exemplo").classList.remove("oculto");
   $("btn-nova").classList.add("oculto");
   carregarScript("/exemplo-dados.js")
@@ -563,7 +548,6 @@ if (MODO_EXEMPLO) {
     });
 } else {
   fetch("/api/config").then((r) => r.json()).then((c) => $("campo-senha").classList.toggle("oculto", !c.senha)).catch(() => {});
-  if (location.hash === "#form") requestAnimationFrame(() => { $("form").scrollIntoView({ block: "start" }); $("lado").focus({ preventScroll: true }); });
 }
 
 /* Exportar PDF: usa a impressão do navegador ("Salvar como PDF"). */

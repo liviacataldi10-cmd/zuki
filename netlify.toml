@@ -3,11 +3,16 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/exemplo"
-  to = "/index.html"
+  from = "/analisar"
+  to = "/analisar.html"
   status = 200
 
 [[redirects]]
-  from = "/exemplo/"
-  to = "/index.html"
+  from = "/exemplo"
+  to = "/exemplo.html"
+  status = 200
+
+[[redirects]]
+  from = "/planos"
+  to = "/planos.html"
   status = 200

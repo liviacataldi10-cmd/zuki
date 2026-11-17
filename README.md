@@ -6,20 +6,31 @@
 
 **Site:** [COLOCAR AQUI O ENDEREÇO DO NETLIFY]
 
-## Quem somos, para quem é e para que serve
+## Para quem é, quem somos e para que serve
 
-- **Quem somos:** estudantes de Direito que convivem com contratos extensos. Percebemos que a revisão toma muito tempo e que, em dezenas de páginas, sempre há o risco de uma cláusula perigosa passar despercebida. Criamos a Brief para ajudar nessa leitura.
 - **Para quem é:** advogados, escritórios de advocacia e departamentos jurídicos de empresas. Também serve a outros profissionais que precisam ler contratos e entender onde estão os riscos.
+- **Quem somos:** a Zuki é uma legaltech que usa inteligência artificial para identificar, explicar e corrigir riscos em cláusulas contratuais. O Brief avalia cada cláusula do ponto de vista do seu cliente e entrega, em minutos, a nota de risco e a redação sugerida.
 - **Para que serve:** analisar o risco das cláusulas de contratos de vários tipos, dar a cada uma uma nota de 1 a 5 e sugerir nova redação. É uma ferramenta de apoio e revisão: orienta a análise e funciona como um alerta caso algo tenha passado despercebido. Não substitui o trabalho do profissional.
+
+## Páginas do site
+
+| Endereço | Página | Conteúdo |
+|---|---|---|
+| `/` | Página inicial | Apresenta o produto: para quem é, quem somos e para que serve; o "Como funciona" em linha do tempo (3 passos); os critérios de análise; a escala de risco; e os botões para analisar um contrato e ver o exemplo |
+| `/analisar` | Ferramenta | O formulário e o resultado da análise |
+| `/exemplo` | Análise de exemplo | O resultado completo de um contrato fictício, sem usar a IA |
+| `/planos` | Planos | A proposta de planos (ainda sem cobrança) |
+
+O menu do cabeçalho leva a todas as páginas e tem o botão **Analisar contrato**.
 
 ## O que o produto faz
 
-A página inicial apresenta a Brief (quem somos, para quem é e para que serve), explica como ela funciona, lista os critérios de análise, mostra a escala de risco, apresenta uma proposta de planos e oferece uma **análise de exemplo** (em `/exemplo`), feita sobre um contrato fictício e que não usa a IA. Para analisar um contrato:
+Para analisar um contrato, na página `/analisar`:
 
 1. O advogado escolhe o **papel do cliente** em uma lista organizada por tipo de contrato (compra e venda, locação, prestação de serviços, trabalho, empréstimo ou financiamento, franquia, licenciamento, sociedade ou investimento) ou escolhe **Outro** e descreve o papel.
 2. Envia o contrato em **PDF** ou cola apenas as **cláusulas** que quer analisar.
 3. Opcionalmente, descreve em até 500 caracteres **o que mais preocupa o cliente** no contrato (por exemplo, prazo de entrega ou multa por rescisão).
-4. A Brief identifica o **tipo de contrato** e o **regime jurídico provável** (civil/empresarial paritário, adesão, consumo ou trabalho), separa o texto em cláusulas e analisa cada uma, dando atenção especial às preocupações informadas.
+4. O Brief identifica o **tipo de contrato** e o **regime jurídico provável** (civil/empresarial paritário, adesão, consumo ou trabalho), separa o texto em cláusulas e analisa cada uma, dando atenção especial às preocupações informadas.
 5. O resultado mostra:
    - um resumo com o tipo de contrato, o lado analisado, a nota média de risco, a contagem de cláusulas por nível e as 3 mais críticas;
    - como o contrato trata cada preocupação informada pelo cliente;
@@ -48,7 +59,7 @@ A análise segue o direito brasileiro. A IA é instruída a **não inventar arti
 
 ## Planos (proposta)
 
-A página inicial traz uma proposta de modelo de negócio. **Ainda não há cobrança**: o uso atual do site é de demonstração, e os valores são ideias baseadas em uma estimativa do custo da IA por contrato, que ainda não foi medida.
+A página `/planos` traz uma proposta de modelo de negócio. **Ainda não há cobrança**: o uso atual do site é de demonstração, e os valores são ideias baseadas em uma estimativa do custo da IA por contrato, que ainda não foi medida.
 
 | Plano | Proposta |
 |---|---|
@@ -64,10 +75,15 @@ A página inicial traz uma proposta de modelo de negócio. **Ainda não há cobr
 - Contratos longos são processados em partes, para não ultrapassar o limite de texto nem o tempo limite das funções do Netlify.
 
 ```
-public/                 o site (index.html, app.js, estilo.css, logo.webp)
-public/exemplo-dados.js a análise de exemplo (contrato fictício, mostrada em /exemplo)
-netlify/functions/      a função que chama o Claude (api.mjs)
-netlify.toml            configuração do Netlify (inclui o endereço /exemplo)
+public/index.html           página inicial (apresentação do produto)
+public/analisar.html        a ferramenta: formulário e resultado
+public/exemplo.html         análise de exemplo (usa public/exemplo-dados.js)
+public/planos.html          proposta de planos
+public/app.js               lógica da ferramenta e do exemplo
+public/estilo.css           visual do site
+public/exemplo-dados.js     a análise de exemplo (contrato fictício)
+netlify/functions/api.mjs   a função que chama o Claude
+netlify.toml                configuração do Netlify (pasta, funções e endereços das páginas)
 ```
 
 ### Visual
@@ -83,7 +99,7 @@ Tema claro, em off-white lilás, com títulos e detalhes nas cores da logo (roxo
 
 ## Como publicar (Netlify)
 
-1. Conecte este repositório ao Netlify (**Add new project → Import an existing project → GitHub**). O `netlify.toml` já define a pasta `public` e as funções.
+1. Conecte este repositório ao Netlify (**Add new project → Import an existing project → GitHub**). O `netlify.toml` já define a pasta `public`, as funções e os endereços `/analisar`, `/exemplo` e `/planos`.
 2. Em **Project configuration → Environment variables**, crie:
    - `ANTHROPIC_API_KEY`: chave da API da Anthropic (obrigatória);
    - `ZUKI_SENHA`: senha de acesso (opcional, recomendada);
