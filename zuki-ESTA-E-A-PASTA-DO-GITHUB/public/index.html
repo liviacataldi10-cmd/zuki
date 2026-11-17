@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brief — Análise de risco contratual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="icon" href="/logo.webp" type="image/webp">
+  <link rel="stylesheet" href="/estilo.css">
+</head>
+<body data-pagina="inicio">
+  <header class="topo">
+    <div class="conteudo topo-interno">
+      <a class="logo" href="/" aria-label="Brief, por Zuki — início"><img src="/logo.webp" alt="" width="48" height="48">Brief</a>
+      <span class="sublogo">por Zuki</span>
+      <nav class="menu" aria-label="Menu principal">
+        <a href="/#como-funciona">Como funciona</a>
+        <a href="/exemplo" id="menu-exemplo">Exemplo</a>
+        <a href="/planos">Planos</a>
+        <a href="/analisar" class="menu-cta">Analisar contrato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="conteudo">
+    <section class="hero">
+      <h1>Descubra o risco de cada cláusula antes de assinar.</h1>
+      <p class="hero-sub">Informe o lado do seu cliente e envie o contrato. O Brief avalia cada cláusula do ponto de vista dele, explica o risco e sugere uma nova redação.</p>
+      <div class="intro-acoes">
+        <a href="/analisar" class="botao-principal link-botao">Analisar contrato</a>
+        <a href="/exemplo" class="botao-sec link-botao">Ver análise de exemplo</a>
+      </div>
+    </section>
+
+    <section class="apresentacao" aria-label="Apresentação">
+      <article>
+        <h2>Para quem é</h2>
+        <p>Para advogados, escritórios de advocacia e departamentos jurídicos de empresas. Também serve a outros profissionais que precisam ler contratos e entender onde estão os riscos.</p>
+      </article>
+      <article>
+        <h2>Quem somos</h2>
+        <p>A Zuki é uma legaltech que usa inteligência artificial para identificar, explicar e corrigir riscos em cláusulas contratuais. O Brief avalia cada cláusula do ponto de vista do seu cliente e entrega, em minutos, a nota de risco e a redação sugerida.</p>
+      </article>
+      <article>
+        <h2>Para que serve</h2>
+        <p>O Brief analisa o risco das cláusulas de contratos de vários tipos, dá a cada uma uma nota de 1 a 5 e sugere nova redação. É uma ferramenta de apoio e revisão: orienta a análise e funciona como um alerta caso algo tenha passado despercebido. Não substitui o trabalho do profissional.</p>
+      </article>
+    </section>
+
+    <section id="como-funciona" class="como-funciona" aria-labelledby="titulo-como-funciona">
+      <h2 id="titulo-como-funciona" class="secao-titulo">Como funciona</h2>
+      <ol class="linha-tempo">
+        <li>
+          <span class="marco" aria-hidden="true">1</span>
+          <h3><span class="sr-only">1. </span>Informe o lado do seu cliente</h3>
+          <p>Escolha o papel do cliente no contrato, como comprador, locatário ou contratante.</p>
+        </li>
+        <li>
+          <span class="marco" aria-hidden="true">2</span>
+          <h3><span class="sr-only">2. </span>Envie o contrato ou cole as cláusulas</h3>
+          <p>Em PDF ou colando só os trechos que quer analisar, com a opção de dizer o que mais preocupa o cliente.</p>
+        </li>
+        <li>
+          <span class="marco" aria-hidden="true">3</span>
+          <h3><span class="sr-only">3. </span>Receba a nota de risco de cada cláusula</h3>
+          <p>Com explicação, sugestão de melhoria e proposta de nova redação.</p>
+        </li>
+      </ol>
+
+      <details id="criterios-det" class="criterios-det" open>
+          <summary class="subtitulo">O que o Brief avalia</summary>
+          <ul class="criterios-lista">
+            <li><strong>Validade</strong><span>A cláusula pode ser nula ou anulável?</span></li>
+            <li><strong>Clareza</strong><span>Há termos vagos ou obrigações sem prazo?</span></li>
+            <li><strong>Equilíbrio</strong><span>Os direitos e deveres são recíprocos?</span></li>
+            <li><strong>Exposição financeira</strong><span>Multas, indenizações e limites de responsabilidade</span></li>
+            <li><strong>Alocação de riscos</strong><span>Quem arca com o imprevisto?</span></li>
+            <li><strong>Saída do contrato</strong><span>Rescisão, renovação automática e multas</span></li>
+            <li><strong>Restrições</strong><span>Exclusividade, não concorrência, propriedade intelectual</span></li>
+            <li><strong>Solução de conflitos</strong><span>Foro, lei aplicável e arbitragem</span></li>
+            <li><strong>Lacunas</strong><span>Cláusulas importantes que estão faltando</span></li>
+          </ul>
+        </details>
+
+      <div class="escala">
+          <span class="escala-rotulo">Escala de risco:</span>
+          <ul class="escala-lista">
+            <li class="nota-1"><span class="selo mini-selo">1</span>Mínimo</li>
+            <li class="nota-2"><span class="selo mini-selo">2</span>Baixo</li>
+            <li class="nota-3"><span class="selo mini-selo">3</span>Moderado</li>
+            <li class="nota-4"><span class="selo mini-selo">4</span>Alto</li>
+            <li class="nota-5"><span class="selo mini-selo">5</span>Crítico</li>
+          </ul>
+          <a href="/exemplo" class="botao-sec link-botao">Ver análise de exemplo</a>
+        </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="conteudo">Esta análise é gerada por inteligência artificial e não substitui a revisão de um advogado.</div>
+  </footer>
+  <script>
+    /* critérios: abertos no computador e no tablet, recolhidos no celular */
+    document.getElementById("criterios-det").open = matchMedia("(min-width: 640px)").matches;
+  </script>
+</body>
+</html>

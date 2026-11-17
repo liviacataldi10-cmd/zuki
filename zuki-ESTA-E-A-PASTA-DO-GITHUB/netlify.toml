@@ -1,0 +1,18 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/analisar"
+  to = "/analisar.html"
+  status = 200
+
+[[redirects]]
+  from = "/exemplo"
+  to = "/exemplo.html"
+  status = 200
+
+[[redirects]]
+  from = "/planos"
+  to = "/planos.html"
+  status = 200

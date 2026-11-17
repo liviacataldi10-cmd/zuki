@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analisar contrato — Brief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="icon" href="/logo.webp" type="image/webp">
+  <link rel="stylesheet" href="/estilo.css">
+</head>
+<body data-pagina="analisar">
+  <header class="topo">
+    <div class="conteudo topo-interno">
+      <a class="logo" href="/" aria-label="Brief, por Zuki — início"><img src="/logo.webp" alt="" width="48" height="48">Brief</a>
+      <span class="sublogo">por Zuki</span>
+      <nav class="menu" aria-label="Menu principal">
+        <a href="/#como-funciona">Como funciona</a>
+        <a href="/exemplo" id="menu-exemplo">Exemplo</a>
+        <a href="/planos">Planos</a>
+        <a href="/analisar" class="menu-cta" aria-current="page">Analisar contrato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="conteudo">
+    <section id="tela-form">
+      <div class="intro">
+        <h1>Analisar contrato</h1>
+        <p class="hero-sub">Informe o lado do seu cliente e envie o contrato.</p>
+      </div>
+
+      <form id="form" class="cartao" novalidate>
+        <fieldset>
+          <legend>1. De que lado está o seu cliente?</legend>
+          <label for="lado">Papel do cliente no contrato</label>
+          <select id="lado" name="lado" required>
+            <option value="" selected disabled>Selecione o papel do cliente</option>
+            <optgroup label="Compra e venda">
+              <option value="Comprador" data-contrato="compra e venda">Comprador</option>
+              <option value="Vendedor" data-contrato="compra e venda">Vendedor</option>
+            </optgroup>
+            <optgroup label="Locação">
+              <option value="Locador" data-contrato="locação">Locador</option>
+              <option value="Locatário" data-contrato="locação">Locatário</option>
+            </optgroup>
+            <optgroup label="Prestação de serviços">
+              <option value="Contratante" data-contrato="prestação de serviços">Contratante</option>
+              <option value="Contratado (prestador)" data-contrato="prestação de serviços">Contratado (prestador)</option>
+            </optgroup>
+            <optgroup label="Trabalho">
+              <option value="Empregador" data-contrato="trabalho">Empregador</option>
+              <option value="Empregado" data-contrato="trabalho">Empregado</option>
+            </optgroup>
+            <optgroup label="Empréstimo ou financiamento">
+              <option value="Credor" data-contrato="empréstimo ou financiamento">Credor</option>
+              <option value="Devedor" data-contrato="empréstimo ou financiamento">Devedor</option>
+            </optgroup>
+            <optgroup label="Franquia">
+              <option value="Franqueador" data-contrato="franquia">Franqueador</option>
+              <option value="Franqueado" data-contrato="franquia">Franqueado</option>
+            </optgroup>
+            <optgroup label="Licenciamento">
+              <option value="Licenciante" data-contrato="licenciamento">Licenciante</option>
+              <option value="Licenciado" data-contrato="licenciamento">Licenciado</option>
+            </optgroup>
+            <optgroup label="Sociedade ou investimento">
+              <option value="Sócio ou investidor" data-contrato="sociedade ou investimento">Sócio ou investidor</option>
+              <option value="Sociedade" data-contrato="sociedade ou investimento">Sociedade</option>
+            </optgroup>
+            <option value="Outro">Outro</option>
+          </select>
+          <div id="campo-outro" class="oculto">
+            <label for="papel-outro">Descreva o papel do cliente</label>
+            <input id="papel-outro" type="text" maxlength="100" placeholder="Ex.: fiador, cedente, representante comercial">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. Qual é o contrato?</legend>
+          <div class="abas" role="tablist">
+            <button type="button" role="tab" id="aba-pdf" class="aba ativa" aria-selected="true">Enviar PDF</button>
+            <button type="button" role="tab" id="aba-texto" class="aba" aria-selected="false">Colar cláusulas</button>
+          </div>
+
+          <div id="painel-pdf">
+            <label id="area-pdf" class="area-arquivo" for="arquivo">
+              <input id="arquivo" type="file" accept="application/pdf,.pdf">
+              <strong id="nome-arquivo">Clique para escolher o PDF ou arraste-o até aqui</strong>
+              <span>Contrato inteiro · até 10 MB · o arquivo não é salvo</span>
+            </label>
+          </div>
+
+          <div id="painel-texto" class="oculto">
+            <label for="texto">Cole ou transcreva as cláusulas que deseja analisar</label>
+            <textarea id="texto" rows="10" placeholder="CLÁUSULA 1ª – DO OBJETO&#10;..."></textarea>
+          </div>
+        </fieldset>
+
+        <div class="passo">
+          <label for="preocupacoes" class="titulo-passo">3. O que mais preocupa o seu cliente neste contrato? (opcional)</label>
+          <textarea id="preocupacoes" class="curto" rows="3" maxlength="500" aria-describedby="contador-preocupacoes" placeholder="Ex.: prazo de entrega, multa por rescisão, responsabilidade por defeitos"></textarea>
+          <p id="contador-preocupacoes" class="contador">0 de 500 caracteres</p>
+        </div>
+
+        <fieldset id="campo-senha" class="oculto">
+          <legend>4. Senha de acesso</legend>
+          <label for="senha" class="sr-only">Senha de acesso</label>
+          <input id="senha" type="password" autocomplete="off" placeholder="Senha informada pelo responsável">
+        </fieldset>
+
+        <p id="erro-form" class="erro oculto" role="alert"></p>
+        <button type="submit" class="botao-principal">Analisar contrato</button>
+        <div class="privacidade">
+          <svg class="cadeado" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="4.5" y="10.5" width="15" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <div>
+            <p>O arquivo não é salvo. O contrato é processado apenas para gerar a análise e descartado em seguida.</p>
+            <p class="privacidade-menor">O texto é enviado a um modelo de IA para processamento.</p>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============ CARREGANDO ============ -->
+    <section id="tela-carregando" class="oculto" aria-live="polite">
+      <div class="cartao carregando">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2 id="msg-carregando">Lendo o contrato…</h2>
+        <p>A análise pode levar de alguns segundos a alguns minutos, conforme o tamanho do contrato. Não feche esta página.</p>
+      </div>
+    </section>
+
+    <!-- ============ RESULTADO ============ -->
+    <section id="tela-resultado" class="oculto">
+      <div id="faixa-exemplo" class="faixa-exemplo oculto" role="note">
+        <p>Este é um exemplo com um contrato fictício.</p>
+        <a href="/analisar" class="botao-principal pequeno link-botao nao-imprimir">Analisar o meu contrato</a>
+      </div>
+      <div class="barra-acoes nao-imprimir">
+        <button type="button" id="btn-nova" class="botao-sec">← Nova análise</button>
+        <button type="button" id="btn-pdf" class="botao-principal pequeno">Exportar relatório em PDF</button>
+      </div>
+
+      <div id="resumo" class="cartao resumo"></div>
+
+      <div class="filtros nao-imprimir">
+        <div>
+          <label for="filtro-nota">Filtrar por nota</label>
+          <select id="filtro-nota">
+            <option value="0">Todas as notas</option>
+            <option value="5">5 — Crítico</option>
+            <option value="4">4 — Alto</option>
+            <option value="3">3 — Moderado</option>
+            <option value="2">2 — Baixo</option>
+            <option value="1">1 — Mínimo</option>
+            <option value="4+">4 ou mais</option>
+            <option value="3+">3 ou mais</option>
+          </select>
+        </div>
+        <div>
+          <label for="ordem">Ordenar por</label>
+          <select id="ordem">
+            <option value="contrato">Ordem do contrato</option>
+            <option value="maior">Maior risco primeiro</option>
+            <option value="menor">Menor risco primeiro</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="lista-clausulas"></div>
+      <section id="lacunas" class="oculto"></section>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="conteudo">Esta análise é gerada por inteligência artificial e não substitui a revisão de um advogado.</div>
+  </footer>
+  <script src="/app.js"></script>
+</body>
+</html>
